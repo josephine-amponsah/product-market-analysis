@@ -44,3 +44,21 @@ def bigram_tokenizer(sent_list):
         new_item = [" ".join(token) for token in bigrams]
         bigram_tokens.append(new_item)
     return bigram_tokens
+
+def ngram_tokenizer(sent):
+    # output = []
+    unigrams = []
+    words = re.sub(r'[^a-zA-Z0-9\s]', '', str(sent))
+    words = words.lower()
+    line = word_tokenize(words)
+    new_line = remove_stopwords(line)
+    unigrams.append(new_line)
+    # output.extend(unigrams)
+    bigrams = []
+    tokens = words.split()
+    bigram= list(ngrams(tokens, 2))
+    new_item = [" ".join(token) for token in bigram]
+    bigrams.append(new_item)
+    # output.extend(bigrams)
+    output = unigrams + bigrams
+    return output
