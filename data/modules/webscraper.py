@@ -2,56 +2,54 @@
 from apify_client import ApifyClient
 import json
 
-def google_store(country):
+def google_store(country, limit):
     client = ApifyClient(
-        token='apify_api_BdgKVIBQfeQk9rBpUdoOlNhBG7484q15CTd0')
+        token='apify_api_dPdcbf6nqOnroEBpchTDkud3zPoOH24qQnKF')
     input_data = {
         "action": "getApps",
-        "num": 200,
-        "appIdOrUrl": "com.google.android.apps.translate",
-        "devIdOrUrl": "com.google.android.apps.translate",
+        "num": limit,
         "sort": "NEWEST",
         "lang": "en",
         "country": country,
+        "category": "HEALTH_AND_FITNESS",
         "fullDetail": True,
         "search": "google",
     }
     # print("Before client.actor")
     run = client.actor(
-        "compass/crawler-google-places").call(run_input=input_data)
+        "bebity/google-play-api").call(run_input=input_data)
     # print("After client.actor")
     dataset = client.dataset(run['defaultDatasetId'])
-    hotels = dataset.list_items().items
-    file_path = "data/raw_data.json"
+    apps = dataset.list_items().items
+    file_path = "google-apps.json"
     with open(file_path, "w") as json_file:
-        json.dump(hotels, json_file)
-    return hotels
+        json.dump(apps, json_file, indent=3)
+    return 
 
-def app_store(country):
+def app_store(country, limit):
     client = ApifyClient(
-        token='apify_api_BdgKVIBQfeQk9rBpUdoOlNhBG7484q15CTd0')
+        token='apify_api_dPdcbf6nqOnroEBpchTDkud3zPoOH24qQnKF')
     input_data = {
         "action": "getApps",
-        "num": 200,
-        "appIdOrUrl": "com.google.android.apps.translate",
-        "devIdOrUrl": "com.google.android.apps.translate",
-        "sort": "NEWEST",
+        "num": limit,
+        "sort": "RECENT",
         "lang": "en",
         "country": country,
+        "category": "HEALTH_AND_FITNESS",
         "fullDetail": True,
         "search": "google",
     }
     # print("Before client.actor")
     run = client.actor(
-        "compass/crawler-google-places").call(run_input=input_data)
+        "bebity/apple-store-api").call(run_input=input_data)
     # print("After client.actor")
     dataset = client.dataset(run['defaultDatasetId'])
-    hotels = dataset.list_items().items
-    file_path = "data/raw_data.json"
+    apps = dataset.list_items().items
+    file_path = "apple-apps.json"
     with open(file_path, "w") as json_file:
-        json.dump(hotels, json_file)
-    return hotels
-    return
+        json.dump(apps, json_file, indent=3)
+    return 
+
 
 def get_details(appId):
     return
