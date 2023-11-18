@@ -4,6 +4,7 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 stop = set(stopwords.words('english'))
+import re
 
 
 def remove_stopwords(tokens):
@@ -26,7 +27,9 @@ def lemmatizer(sent_list):
 def unigram_tokenizer(sent_list):
     unigram_tokens = []
     for sent in sent_list:
-        line = word_tokenize(sent)
+        words = re.sub(r'[^a-zA-Z0-9\s]', '', str(sent))
+        words = words.lower()
+        line = word_tokenize(words)
         new_line = remove_stopwords(line)
         unigram_tokens.append(new_line)
     return lemmatizer(unigram_tokens)
