@@ -22,9 +22,21 @@ def google_store(country, limit):
     dataset = client.dataset(run['defaultDatasetId'])
     apps = dataset.list_items().items
     file_path = "google-apps.json"
+    # Load existing data from the file if it exists
+    existing_data = []
+    try:
+        with open(file_path, "r") as json_file:
+            existing_data = json.load(json_file)
+    except FileNotFoundError:
+        pass
+
+    # Append the new data to the existing data
+    existing_data.extend(apps)
+
+    # Write the combined data back to the file
     with open(file_path, "w") as json_file:
-        json.dump(apps, json_file, indent=3)
-    return 
+        json.dump(existing_data, json_file, indent=3)
+    return
 
 def app_store(country, limit):
     client = ApifyClient(
