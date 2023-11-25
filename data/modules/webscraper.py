@@ -40,7 +40,7 @@ def google_store(country, limit):
 
 def app_store(country, limit):
     client = ApifyClient(
-        token='apify_api_dPdcbf6nqOnroEBpchTDkud3zPoOH24qQnKF')
+        token='apify_api_3zt0V4WsF6TFfkwXo8wC5pnyCoc1DS4DBGRa')
     input_data = {
         "action": "getApps",
         "num": limit,
@@ -70,24 +70,20 @@ def get_pricing(appId):
 def get_performance(appId):
     return
 
-
-def get_apps(category, country):
+token2 = "apify_api_3zt0V4WsF6TFfkwXo8wC5pnyCoc1DS4DBGRa"
+def apple_store(ids):
     # Initialize the ApifyClient with your API token
-    client = ApifyClient("<YOUR_API_TOKEN>")
+    client = ApifyClient(token2)
 
     # Prepare the Actor input
     run_input = {
-        "action": "getApps",
-        "num": 200,
-        "appIdOrUrl": "com.google.android.apps.translate",
-        "devIdOrUrl": "com.google.android.apps.translate",
-        "sort": "NEWEST",
-        "lang": "en",
-        "country": "us",
-        "fullDetail": False,
-        "search": "google",
+        "appIds": ids,
     }
-
     # Run the Actor and wait for it to finish
-    run = client.actor("7jiXXcm7k1SGt9mFr").call(run_input=run_input)
+    run = client.actor("1lFRP61fX8XLmSSZH").call(run_input=run_input)
+    dataset = client.dataset(run['defaultDatasetId'])
+    apps = dataset.list_items().items
+    file_path = "app_store_apps.json"
+    with open(file_path, "w") as json_file:
+        json.dump(apps, json_file, indent=3)
     return
