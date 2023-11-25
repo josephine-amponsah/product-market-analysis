@@ -62,3 +62,26 @@ def ngram_tokenizer(sent):
     # output.extend(bigrams)
     output = unigrams + bigrams
     return output
+map_dict = {"Fitness": ["workout", "weight loss", "lose weight", "exercise", "exercising", "gym", "fitness", "pedometer", "step counter", "fit", "walking",
+                        "running", "daily step", "cardio", "pilate", "boxing", "bodybuiling", "hiit", "stretch", "trainer", "trackerstep",
+                        "workouts", "steps", "active","hiking","step", "sports","hikes"],
+            "Nutrition":["diet", "calorie","intermittent fasting", "recipe", "nutrition", "calorie counter", "food", "meal plan", "menu planner", "water","vegan",
+                         "water tracker"],
+            "Wellness" : ["stress", "selfcare", "meditation", "calm", "yoga", "mindfulness", "anxiety", "menstrual", "ovulation", "anxiety", "relax",
+                          "relaxation", "smoking", "wellbeing", "sleep", "music", "depression", "motivation", "therapy", "therapist", "smokefree",
+                          "routine", "couple", "menstruations", "mood", "companion","period","friend","habits","moods","positive","personal care",
+                          "addiction","wellness","pregnancy","therapists"],
+            "Health Monitoring": ["blood pressure", "heart rate", "pulse", "blood sugar", "diabetes", "bmi", "health","glucose","data","prescription",
+                                  "doctor"]
+            }
+def tokenize_summary(text):
+    singles = ngram_tokenizer(text)
+    multigrams = [item for sublist in singles for item in sublist]
+    return multigrams
+
+def assign_subgenre(text):
+    tokens = tokenize_summary(text)
+    for subgenre, keywords in map_dict.items():
+        if any(keyword in tokens for keyword in keywords):
+            return subgenre
+    return None
